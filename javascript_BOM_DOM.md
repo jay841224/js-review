@@ -55,3 +55,6 @@ window 可以省略，這就是瀏覽器環境的 BOM 提供給 JavaScript 控�
 最根部的地方，就是 __document__
 
 DOM API定義可以讓 JavaScript 可以存取、改變 HTML 架構、樣式和內容的方法，包刮綁定事件。
+## 差別
+* BOM: JavaScript 與「瀏覽器」溝通的窗口，不涉及網頁內容。
+* DOM: JavaScript 用來控制「網頁」的節點與內容的標準。
