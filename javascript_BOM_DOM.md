@@ -19,7 +19,7 @@ console.log(window.a);  //10
 但若是直接透過指定 window 物件的屬性則可以直接刪除
 
 __delete__ 用來刪除屬性，不能刪除變數，但若是以 window 的屬性建立，即可刪除。
-```
+``` JavaScript
 window.a = 10;
 console.log( window.a );    // 10
 
@@ -58,3 +58,9 @@ DOM API定義可以讓 JavaScript 可以存取、改變 HTML 架構、樣式和�
 ## 差別
 * BOM: JavaScript 與「瀏覽器」溝通的窗口，不涉及網頁內容。
 * DOM: JavaScript 用來控制「網頁」的節點與內容的標準。
+## DOM API
+```js
+document.querySelector('id').textContent = 'Hello World!';
+```
+### NodeList
+* __NodeList__ 可藉由 Node.childNodes 屬性以及 document.querySelectorAll() 方法取得。
