@@ -136,6 +136,29 @@ console.log(coin2.value);  //100
 console.log(coin1 === coin2)  //true
  ```
  - 以上證明，物件型態是利用引用的方式傳遞資料，在我們建立coin2並用=指向coin1時，就是指向coin1的位置，兩者視為同一物件
+#### Pass by sharing
+如果是重新賦值，並不會改變，但若直接改屬性，則會變動。
+```js
+var coin1 = { value: 10 };
+
+function changeValue(obj) {
+  obj = { value: 123 };
+}
+
+changeValue(coin1);
+console.log(coin1);   // 此時 coin1 仍是 { value: 10 }
+```
+```js
+var coin1 = { value: 10 };
+
+function changeValue(obj) {
+  // 僅更新 obj.value，並未重新賦值
+  obj.value = 123;
+}
+
+changeValue(coin1);
+console.log(coin1);   // 此時 coin1 則會變成 { value: 123 }
+```
 
 # function
 ## 一般函式 vs 一級函式
