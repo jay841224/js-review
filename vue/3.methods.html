@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!-- ******methods****** -->
+    <p>methods</p>
+    <div id="appMethods">
+        <p>總金額共 {{ subtotal() }} 元</p>
+        <p>總金額共 {{ subtotal() }} 元</p>
+        <p>總金額共 {{ subtotal() }} 元</p>
+    </div>
+
+    <script>
+        const vm1 = Vue.createApp({
+            data() {
+                return {
+                    price: 100,
+                    quantity: 10
+                }
+            },
+            methods: {
+                subtotal: function () {
+                    return this.price * this.quantity;
+                }
+            }
+        }).mount('#appMethods');
+    </script>
+    <!-- ******methods****** -->
+
+    <!-- ******computed****** -->
+    <p>computed</p>
+    <div id="appComputed">
+        <p>總金額共 {{ subtotal }} 元</p>
+        <p>總金額共 {{ subtotal }} 元</p>
+        <p>總金額共 {{ subtotal }} 元</p>
+        <p>{{ price }}</p>
+    </div>
+
+    <script>
+        const vm2 = Vue.createApp({
+            data() {
+                return {
+                    price: 200,
+                    quantity: 10
+                }
+            },
+            computed: {
+                subtotal: function () {
+                    return this.price * this.quantity;
+                }
+            }
+        }).mount('#appComputed');
+    </script>
+    <!-- ******computed****** -->
+
+
+    <!-- 比較 -->
+    <div id="app">
+        <p>methods</p>
+        <p>總金額共 {{ subtotalMethods() }} 元</p>
+        <p>總金額共 {{ subtotalMethods() }} 元</p>
+        <p>總金額共 {{ subtotalMethods() }} 元</p>
+
+        <p>computed</p>
+        <p>總金額共 {{ subtotalComputed }} 元</p>
+        <p>總金額共 {{ subtotalComputed }} 元</p>
+        <p>總金額共 {{ subtotalComputed }} 元</p>
+    </div>
+
+    <script>
+        const vm3 = Vue.createApp({
+            data() {
+                return {
+                    price: 100,
+                    quantity: 30
+                }
+            },
+            methods: {
+                subtotalMethods: function () {
+                    console.log('methods');
+                    return this.price * this.quantity;
+                }
+            },
+            computed: {
+                subtotalComputed: function () {
+                    console.log('computed');
+                    return this.price * this.quantity;
+                }
+            }
+        }).mount('#app');
+    </script>
+    <!-- 比較 -->
+</body>
+
+</html>

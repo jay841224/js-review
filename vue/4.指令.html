@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!-- v-bind -->
+    <div id="app">
+        <p v-bind:id="customId">app</p>
+        <button v-bind:disabled="isDisabled">click</button>
+    </div>
+
+    <script>
+        var vm = Vue.createApp({
+            data() {
+                return {
+                    customId: 'item-id',
+                    isDisabled: true
+                }
+            }
+        }).mount('#app');
+
+    </script>
+    <!-- v-bind -->
+
+    <!-- v-model text選擇框-->
+    <br>
+    <div id="app2">
+        <input v-model="message" type="text">
+        <p>input= {{ message }}</p>
+    </div>
+    <script>
+        var vm2 = Vue.createApp({
+            data() {
+                return {
+                    message: ''
+                }
+            }
+        }).mount('#app2');
+    </script>
+    <!-- v-model text選擇框--->
+
+
+    <!-- v-model radio選擇框--->
+    <div id="app3">
+        <div>
+            <input type="radio" id="one" v-model="picked" value="1">
+            <label for="one">radio 1</label>
+        </div>
+        <div>
+            <input type="radio" id="two" v-model="picked" value="2">
+            <label for="two">radio 2</label>
+        </div>
+        <p>you pick radio {{ picked }}</p>
+    </div>
+    <script>
+        var vm3 = Vue.createApp({
+            data() {
+                return {
+                    picked: 1
+                }
+            }
+        }).mount('#app3');
+    </script>
+    <!-- v-model radio選擇框--->
+
+    <!-- v-model checkbox選擇框--->
+    <div id="app4">
+        <!-- 多選 -->
+        <input type="checkbox" id="jay" value="jay" v-model="checkedNames">
+        <label for="jay">jay</label>
+        <input type="checkbox" id="jens" value="jens" v-model="checkedNames">
+        <label for="jens">jens</label>
+        <input type="checkbox" id="tony" value="tony" v-model="checkedNames">
+        <label for="tony">tony</label>
+        <p>checked names:{{ checkedNames }}</p>
+        <!-- 多選 -->
+        <!-- 單選 -->
+        <input type="checkbox" id="checkbox" v-model="isChecked">
+        <label for="checkbox">Status: {{ isChecked }}</label>
+        <!-- 單選 -->
+    </div>
+
+    <script>
+        var vm4 = Vue.createApp({
+            data() {
+                return {
+                    checkedNames: [],
+                    isChecked: true
+                }
+            }
+        }).mount('#app4');
+    </script>
+    <!-- v-model checkbox選擇框--->
+
+
+    <!-- v-model select下拉選擇框--->
+    <div id="app5">
+        <select v-model="selected">
+            <option disabled value="">請選擇</option>
+            <option>台北市</option>
+            <option>台中市</option>
+            <option>高雄市</option>
+        </select>
+        <p>你的選擇是: {{ selected || '未選擇' }}</p>
+    </div>
+    <script>
+        var vm5 = Vue.createApp({
+            data() {
+                return {
+                    selected: ''
+                }
+            }
+        }).mount('#app5');
+    </script>
+    <!-- v-model select下拉選擇框--->
+</body>
+
+</html>

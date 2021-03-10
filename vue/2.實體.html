@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!--******傳值******-->
+    <div id="app">
+        hi {{ message }}
+    </div>
+    <script>
+        const vm = Vue.createApp({
+            data() {
+                return {
+                    message: 'jay'
+                }
+            }
+        }).mount('#app');
+
+        vm.message = 'jens';
+        //vm.$data.message = 'jens123';
+
+
+    </script>
+    <!--******傳值******-->
+
+    <!--******data共用汙染******-->
+    <div id="appA">
+        VM1: <input type="text" v-model="name">
+    </div>
+
+    <!-- vm2 -->
+    <div id="appB">
+        VM2: <input type="text" v-model="name">
+    </div>
+    <script>
+        const dataObj = {
+            name: '08JS'
+        };
+        const vmA = Vue.createApp({
+            data() {
+                return { ...dataObj }
+            },
+        }).mount('#appA');
+
+        const vmB = Vue.createApp({
+            data() {
+                return { ...dataObj }
+            },
+        }).mount('#appB');
+
+    </script>
+    <!--******data共用汙染******-->
+
+
+    <!--******template模板屬性******-->
+    <div id="appTemplate"></div>
+    <script>
+        const appTemp = Vue.createApp({
+            template: `<div> {{ greeting }} </div>`,
+            data() {
+                return {
+                    greeting: 'hello vue.js template'
+                }
+            }
+        }).mount('#appTemplate');
+    </script>
+
+    <!--******template模板屬性******-->
+</body>
+
+
+</html>

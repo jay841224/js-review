@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <p>匯率轉換</p>
+        <div>台幣<input v-model="twd"></div>
+        <div>日幣<input v-model="jpy"></div>
+        <div>美金<input v-model="usd"></div>
+    </div>
+    
+</body>
+<script>
+    var vm = Vue.createApp({
+        data() {
+            return {
+                twd: 10
+            }
+        },
+        computed: {
+            jpy: {
+                get() {
+                    return  Number.parseFloat(Number(this.twd) / 0.278).toFixed(3);
+                },
+
+                set(val) {
+                    this.twd = Number.parseFloat(Number(val) * 0.278).toFixed(3);
+                }
+            },
+
+            usd: {
+                get() {
+                    return Number.parseFloat(Number(this.twd) / 30).toFixed(3);
+                },
+
+                set(val) {
+                    this.twd = Number.parseFloat(Number(val) * 30).toFixed(3);
+                }
+            }
+        }
+    }).mount('#app');
+</script>
+</html>
