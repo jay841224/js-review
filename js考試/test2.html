@@ -1,0 +1,210 @@
+<!--問1.要使用jquery還是單純js-->
+<!--問2.在jquery生成element後，單純的getElementById和$("")都抓不到 why??-->
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            border-collapse: collapse;
+            /*讓表格個線不重複出現*/
+            margin: 30px;
+        }
+
+        input {
+            margin: 3px;
+        }
+
+        button {
+            margin: 2px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <table>
+            <tbody id="panel">
+                <tr>
+                    <!--row-->
+                    <th>製造商</th>
+                    <!--first row-->
+                    <th><input type="text" id="maf"></th>
+                    <th>類別</th>
+                    <th><input type="text" id="cla"></th>
+                </tr>
+                <tr>
+                    <td>底價</td>
+                    <!--剩餘的row-->
+                    <td><input type="text" id="price"></td>
+                    <td>售價</td>
+                    <td><input type="text" id="sell"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <!--colspan用來擴張td為4格的寬度-->
+                        <button style="margin: 3px 3px 3px 150px;" id="add">新增</button>
+                        <button id="modify">修改</button>
+                        <button id="clear">清空</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <tbody id="res">
+                <tr>
+                    <th></th>
+                    <th>序號</th>
+                    <th>製造商</th>
+                    <th>類別</th>
+                    <th>底價</th>
+                    <th>售價</th>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
+
+<!--增加table-->
+<script>
+
+    var test2 = new function () {
+        return {
+            init: function () {
+
+
+
+                //移除指定tr並修改所有序號
+
+                function deleteAndSetNumber(tr) {
+                    //移除指定的row
+                    tr.remove();
+                    var n = 1;
+                    for (var i of $(document).find('td.num')) {
+                        //修改表格的值
+                        $(i).text(n);
+                        n++;
+                    }
+                }
+                var n = 0;
+                while ($("#num")[0]) {
+                    console.log($('#num')[0]);
+                    $('#num')[0].text = n;
+                    n++;
+                }
+
+                //修改已新增之內容
+                function modifyData(tr, input) {
+                    for (var index = 0; index < input.length; index++) {
+                        //.html修改表格值
+                        $($(tr).find('td')[index + 2]).html(input[index]);
+                    }
+
+                }
+
+                //按下add
+                $("#add").click(function () {
+                    var manufacturer = $('#maf').eq(0).val();
+                    var type = $('#cla').eq(0).val();
+                    var price = $('#price').eq(0).val();
+                    var sell = $('#sell').eq(0).val();
+
+                    if (!manufacturer || !type) {
+                        alert('製造商或類別不可空白');
+                        return;
+                    }
+
+                    //將資料放入表格
+                    var newRowCount = $('tr.newRow').length + 1;
+
+                    $("#res").append("<tr class='newRow'" +
+                        "<td><input type='radio' name='select'></td>" +
+                        "<td><input type='radio' name='select'></td>" +
+                        "<td class='num'>" + newRowCount + "</td>" +
+                        "<td>" + manufacturer + "</td>" +
+                        "<td>" + type + "</td>" +
+                        "<td>" + price + "</td>" +
+                        "<td>" + sell + "</td>" +
+                        "<td><button type='button' class='delete' id='" + newRowCount + "'>刪除</button></td>" +
+                        "</tr>");
+
+                    //按下刪除
+                    $('#' + newRowCount).click(function () {
+                        var rowNumber = $(this).attr('id');
+                        console.log(rowNumber);
+                        $('tr.newRow').has('button#' + rowNumber).remove();
+                        var newRowCount = $('tr.newRow').length;
+                        //重新定義序號
+                        $('td.num').each(function (index, element) {
+                            $(element).html(index + 1);
+                        })
+                        //重新定義btn id
+                        $('button.delete').each(function (index, element) {
+                            $(element).prop('id', index);
+                        });
+                    });
+
+                    //按下select
+                    $('[name=select]').click(function () {
+                        $('[name=select]').each(function (index, element) {
+                            if ($(element).prop('checked')) {
+                                $("input[id='maf']").val($('tr.newRow').eq(index).find('td').eq(2).html());
+                                $("input[id='cla']").val($('tr.newRow').eq(index).find('td').eq(3).html());
+                                $("input[id='price']").val($('tr.newRow').eq(index).find('td').eq(4).html());
+                                $("input[id='sell']").val($('tr.newRow').eq(index).find('td').eq(5).html());
+                                return;
+                            }
+                        });
+                    })
+                });
+
+                //按下clear
+                $('#clear').click(function () {
+                    $('.newRow').remove();
+                });
+
+                //按下修改
+                $('#modify').click(function () {
+                    var isChecked = false;
+                    $('[name=select]').each(function (index, element) {
+                        if ($(element).prop('checked')) {
+                            isChecked = true;
+                            var manufacturer = $("#maf").eq(0).val();
+                            var type = $("#cla").eq(0).val();
+                            var price = $("#price").eq(0).val();
+                            var sell = $("#sell").eq(0).val();
+
+                            if (!manufacturer || !type) {
+                                alert('製造商或類別不可空白');
+                                return;
+                            }
+                            //.html修改表格值
+                            $('tr.newRow').eq(index).find('td').eq(2).html(manufacturer);
+                            $('tr.newRow').eq(index).find('td').eq(3).html(type);
+                            $('tr.newRow').eq(index).find('td').eq(4).html(price);
+                            $('tr.newRow').eq(index).find('td').eq(5).html(sell);
+
+                        }
+                    });
+                    if (!isChecked) {
+                        alert('請選擇一個資料修改');
+                    }
+                });
+                // })
+            }
+        }
+    }
+    $(test2.init);
+
+
+</script>
