@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="hashMap.js"></script>
+</head>
+
+<style>
+    .btn {
+        color: gray;
+        margin: 10px 5px;
+        /*跟其他物件距離*/
+        padding: 12px 20px;
+        /*高 寬*/
+    }
+
+    .label {
+        padding: 10px 20px;
+    }
+</style>
+
+<body>
+    <div>
+        <label>KEY&nbsp;&nbsp;</label>
+        <input type="text" id="keyInput"> <br><br>
+        <label>VALUE</label>
+        <input type="text" id="valueInput">
+    </div>
+    <hr>
+    <div>
+        <button type="button" class="btn" id="put">PUT</button>
+        <span></span><button type="button" class="btn" id="clear">CLEAR</button></span>
+    </div>
+    <hr>
+    <div id="result">
+        <h2>【result】</h2>
+    </div>
+</body>
+
+</html>
+
+
+<script>
+    var test1 = new function () {
+        return {
+            init: function () {
+                //先建立一個HashMap物件
+                var map = new HashMap();
+
+                //按下put
+                $("#put").click(function () {
+                    var key1 = $('#keyInput').eq(0).val();
+                    var val1 = $('#valueInput').eq(0).val();
+
+                    //如果map中有重複的key或是沒有輸入key回傳錯誤訊息,若沒問題就加入map中
+                    if (!key1) {
+                        alert('KEY不可空白');
+                        return;
+                    }
+                    if (map.contain(key1)) {
+                        alert('不可輸入相同的KEY');
+                        return;
+                    }
+                    map.put(key1, val1);
+                    clearResult();
+                    output(map);
+                });
+                //按下clear
+                $('#clear').click(function () {
+                    map.clear();
+                    clearResult();
+                });
+
+                //移除結果
+                var clearResult = function() {
+                    $('h3').remove();
+                }
+
+                //輸出到結果
+                var output = function () {
+                    for (var k in map.map) {
+                        $("#result").append("<h3 id='res'>" +
+                            k + " : " + map.map[k] +
+                            "</h3>"
+                        );
+                    }
+                }
+                clearResult();
+                output();
+            }
+        }
+    }
+    $(test1.init);
+
+
+</script>
