@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            border-collapse: collapse;
+            /*讓表格個線不重複出現*/
+            margin: 30px;
+        }
+
+        input {
+            margin: 3px;
+        }
+
+        button {
+            margin: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <table>
+            <tbody id="panel">
+                <tr>
+                    <!--row-->
+                    <th>製造商</th>
+                    <!--first row-->
+                    <th><input type="text" v-model="detail.maf"></th>
+                    <th>類別</th>
+                    <th><input type="text" v-model="detail.cla"></th>
+                </tr>
+                <tr>
+                    <td>底價</td>
+                    <!--剩餘的row-->
+                    <td><input type="text" v-model="detail.price"></td>
+                    <td>售價</td>
+                    <td><input type="text" v-model="detail.sell"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <!--colspan用來擴張td為4格的寬度-->
+                        <button style="margin: 3px 3px 3px 150px;" @click="add">新增</button>
+                        <button @click="update">修改</button>
+                        <button @click="clear">清空</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th>序號</th>
+                        <th>製造商</th>
+                        <th>類別</th>
+                        <th>底價</th>
+                        <th>售價</th>
+                        <th></th>
+                    </tr>
+                    <!-- 用 v-bind 綁定 key 屬性，因為 vue 為了效能，會重複利用已經存在的元素，加上 key 讓他知道這是不同的元素。 -->
+                    <tr is="test-com"></tr>
+                    <!-- <tr is="res-component" v-for="(item, index) in list" :index="index" :maf="item.maf" :key="item"
+                        :cla="item.cla" :price="item.price" :sell="item.sell" @click="tableClick(index)"></tr> -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                initDetail: {
+                    maf: '',
+                    cla: '',
+                    price: '',
+                    sell: ''
+                },
+                detail: {
+                    maf: '',
+                    cla: '',
+                    price: '',
+                    sell: ''
+                },
+                list: [],
+                selectedIndex: ''
+            }
+        },
+        //這邊不用 computed 是因為若 this 內的數值沒改變，Vue不會重新渲染
+        methods: {
+            add: function () {
+                if (this.detail.maf && this.detail.cla) {
+                    //用深拷貝
+                    this.list.push({ ...this.detail });
+                } else {
+                    alert('製造商跟類別不可空白');
+                }
+            },
+            update: function () {
+                //確認有選擇
+                if (this.selectedIndex === '') {
+                    alert('請選擇一個資料修改');
+                    return false;
+                }
+                //確認有填入製造商跟類別
+                if (this.detail.maf && this.detail.cla) {
+                    this.list.splice(this.selectedIndex, 1, { ...this.detail });
+                } else {
+                    alert('製造商跟類別不可空白');
+                }
+            },
+            clear: function () {
+                this.detail = { ...this.initDetail };
+                this.list = [];
+                this.selectedIndex = '';
+            },
+            tableClick: function (index) {
+                //利用冒泡事件
+                if (event.target.type == 'button') {
+                    this.list.splice(index, 1);
+                }
+                if (event.target.type == 'radio') {
+                    this.detail = { ...this.list[index] };
+                }
+            }
+        }
+    });
+    app.component('test-com', {
+        template:
+            `
+        <tr>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+            <td>test</td>
+        </tr>
+        `
+    });
+    app.component('res-component', {
+        props: ['maf', 'cla', 'price', 'sell', 'selectedIndex', 'index'],
+        template:
+            `
+        <tr>
+            <td><input type="radio" v-bind:value="index" v-model="selectedIndex"></td>
+            <td>{{ dataIndex + 1 }}</td>
+            <td>{{ carMaf }}</td>
+            <td>{{ carCla }}</td>
+            <td>{{ carPrice }}</td>
+            <td>{{ carSell }}</td>
+            <td><button type="button">刪除</button></td>
+        </tr>
+        `,
+        data() {
+            return {
+                dataIndex: this.index,
+                carMaf: this.maf,
+                carCla: this.cla,
+                carPrice: this.price,
+                carSell: this.sell,
+                selectedIndex: this.selectedIndex
+            }
+        }
+    });
+
+    app.mount('#app');
+</script>
+
+</html>
